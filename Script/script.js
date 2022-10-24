@@ -51,54 +51,51 @@ function placeCards() {
     
 }
 
-//console.log(gameArea);
 let time = document.querySelector(".clock");
 const clockCount = setInterval(() => {
     seconds++;
-    //minutes = Math.floor(seconds/60);
-    //document.getElementsByClassName("clock").innerHTML = `${minutes} : ${seconds - minutes*60}`;
     time.innerHTML = `${seconds}s`;
   }, 1000);
 
 let cont = 0;
-let previousElement = "";
+let previousGif = "";
 let openedCards = [];
-function play(element, id) {
+let pairs = [];
+let myTimeout = 0;
+
+function play(element, gifName) {
     cont++;
     element.classList.add("clicked");
-    openedCards = document.querySelectorAll(".clicked");
-    console.log(openedCards)
-	if (openedCards.length !== 0) { //primeira jogada 
-        previousElement = id;
+    openedCards.push(element);
 
+	if (openedCards.length === 1) { //primeira jogada 
+        previousGif = gifName;
 	} else {  //segunda jogada
-		if (previousElement === id) { 
-			element.classList.add("pairFound");
-            previousElement.classList.add("pairFound");
-
-            previousElement = "";
-
-            setTimeout(() => {
-                openedCards[0].classList.remove('clicked');
-                openedCards[1].classList.remove('clicked');
-            }, 1000);
+		if (gifName === previousGif) { 
+            openedCards[1].classList.add("pairFound");
+            openedCards[0].classList.add("pairFound");
+            pairs.push(openedCards[1]);
+            pairs.push(openedCards[0]);
+            openedCards = [];
 		} else {
-            previousElement = "";
-            setTimeout(() => {
-                openedCards[0].classList.remove('clicked');
-                openedCards[1].classList.remove('clicked');
-            }, 1000);
+            myTimeout = setTimeout(() => {
+            openedCards[1].classList.remove("clicked");
+            openedCards[0].classList.remove("clicked");
+            openedCards = [];
+          }, 1000);
         }
 	}
-	if (document.querySelectorAll(".pairFound").length === cardsNum) {
+	if (pairs.length === cardsNum) {
+        clearInterval(clockCount);
+        clearTimeout(myTimeout);
 		endGame();
 	}
 }
 
 function endGame() {
-	alert(`Você ganhou em ${cont} jogadas em ${segundos} segundos!`);
+	alert(`Você ganhou em ${cont} jogadas em ${seconds} segundos!`);
+    
     let reset = prompt("Você gostaria de reiniciar o jogo?");
-    clearInterval(clockCount)
     if (reset === "sim"){
         window.location.reload()
     }
