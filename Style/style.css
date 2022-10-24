@@ -7,6 +7,15 @@ body {
     flex-direction: column;
     align-items: center;
 }
+.clock {
+    position: fixed;
+    top: 45px;
+    right: 20px;
+    width: 150px;
+    color: #75B79E;
+    font-size: 40px;
+    font-weight: 500;
+}
 h1 {
     color: #75B79E;
     font-size: 56px;

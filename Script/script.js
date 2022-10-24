@@ -10,6 +10,9 @@ let imgArray = [
 	'Images/unicornparrot.gif'
 ];
 
+let seconds = 0;
+let minutes = 0;
+
 let usedCards = [];
 let cardsNum = 0;
 
@@ -44,17 +47,26 @@ function placeCards() {
             <div class="face hidden"><img src="Images/front.png"></div>
             <div class="face opened"><img src="${usedCards[j]}"></div>
         </div>`;
-
 	}
+    
 }
+
+//console.log(gameArea);
+let time = document.querySelector(".clock");
+const clockCount = setInterval(() => {
+    seconds++;
+    //minutes = Math.floor(seconds/60);
+    //document.getElementsByClassName("clock").innerHTML = `${minutes} : ${seconds - minutes*60}`;
+    time.innerHTML = `${seconds}s`;
+  }, 1000);
 
 let cont = 0;
 let previousElement = "";
-
+let openedCards = [];
 function play(element, id) {
     cont++;
     element.classList.add("clicked");
-    const openedCards = document.querySelectorAll(".clicked");
+    openedCards = document.querySelectorAll(".clicked");
     console.log(openedCards)
 	if (openedCards.length !== 0) { //primeira jogada 
         previousElement = id;
@@ -84,11 +96,13 @@ function play(element, id) {
 }
 
 function endGame() {
-	alert(`Você ganhou em ${cont} jogadas!`);
-    let reset = prompt("Você gostaria de reiniciar o jogo? [sim / não]");
+	alert(`Você ganhou em ${cont} jogadas em ${segundos} segundos!`);
+    let reset = prompt("Você gostaria de reiniciar o jogo?");
+    clearInterval(clockCount)
     if (reset === "sim"){
         window.location.reload()
     }
 }
+
 
 
